@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="ur5" >
+
+  <!-- common stuff -->
+  <xacro:include filename="$(find ur_description)/urdf_robotiq/common.gazebo.xacro" />
+
+  <!-- ur5 -->
+  <xacro:include filename="$(find ur_description)/urdf_robotiq/ur5.urdf.xacro" />
+  <xacro:include filename="$(find robotiq_2f_140_gripper_visualization)/urdf/robotiq_arg2f_140_model.xacro"/>
+
+  <!-- arm -->
+  <xacro:ur5_robot prefix="" joint_limited="true"/>
+
+  <link name="world" />
+
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link = "base_link" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+
+  <!-- Robotiq Coupler -->
+  <!--  + Height added by the coupler: 8mm -->
+  <!--  + Reference frame: at the middle (4mm) -->
+  <joint name="robotiq_coupler_joint" type="fixed">
+    <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2.0}" />
+    <parent link="tool0"/>
+    <child link="robotiq_arg2f_base_link"/>
+  </joint>
+  <gazebo reference="robotiq_arg2f_base_link">
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  
+  
+  <!-- Gazebo FT sensor plugin -->
+  <!--gazebo reference="wrist_3_joint">
+    <provideFeedback>true</provideFeedback>
+  </gazebo>
+  <gazebo>
+    <plugin name="ft_sensor_plugin" filename="libgazebo_ros_ft_sensor.so">
+      <updateRate>250.0</updateRate>
+      <topicName>ft_sensor/raw</topicName>
+      <gaussianNoise>0.0</gaussianNoise>
+      <jointName>wrist_3_joint</jointName>
+    </plugin>
+  </gazebo-->
+  
+  <!-- Gazebo grasping plugin -->
+  <gazebo>
+    <gripper name="gazebo_gripper">
+      <grasp_check>
+        <attach_steps>2</attach_steps>    <!-- default: 20 -->
+        <detach_steps>2</detach_steps>    <!-- default: 40 -->
+        <min_contact_count>3</min_contact_count>
+      </grasp_check>
+      <gripper_link>robotiq_85_left_finger_tip_link</gripper_link>
+      <gripper_link>robotiq_85_right_finger_tip_link</gripper_link>
+      <palm_link>robotiq_85_base_link</palm_link>
+    </gripper>
+  </gazebo>
+</robot>

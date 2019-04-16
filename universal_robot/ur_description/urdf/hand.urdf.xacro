@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<robot xmlns:xacro="http://wiki.ros.org/xacro" name="ur5">
-  <xacro:include filename="hand.xacro"/>
-  <xacro:hand ns="ur5"/>
-</robot>
