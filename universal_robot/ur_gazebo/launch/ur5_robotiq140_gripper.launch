@@ -24,7 +24,7 @@
 
 
   <!-- PID Gain -->
-  <!--rosparam file="$(find ur_gazebo)/controller/pid_for_gazebo_ros_control.yaml" command="load"/-->
+  <rosparam file="$(find ur_gazebo)/controller/pid_for_gazebo_ros_control.yaml" command="load"/>
   
   <!-- Gazebo controller -->
   <node name="robot_controllers" pkg="controller_manager" type="spawner" args=" arm_controller gripper_controller" respawn="false" output="screen"/>

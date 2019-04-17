@@ -19,7 +19,7 @@
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.2 -y 0.7" respawn="false" output="screen" />
-  <rosparam file="$(find ur_gazebo)/controller/ur5gripper_controllers.yaml" command="load"/>
+  <rosparam file="$(find ur_gazebo)/controller/total_gripper_controllers.yaml" command="load"/>
  
 
   <!-- PID Gain -->
