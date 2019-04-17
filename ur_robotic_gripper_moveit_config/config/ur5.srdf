@@ -10,9 +10,10 @@
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="manipulator">
-        <chain base_link="world" tip_link="ee_link" />
+        <chain base_link="world" tip_link="tool0" />
     </group>
     <group name="eef">
+        <joint name="wrist_3_link-tool0_fixed_joint" />
         <joint name="robotiq_coupler_joint" />
         <joint name="finger_joint" />
         <joint name="left_outer_finger_joint" />
@@ -22,16 +23,15 @@
         <joint name="right_outer_knuckle_joint" />
         <joint name="right_outer_finger_joint" />
         <joint name="right_inner_finger_joint" />
-        <joint name="ee_fixed_joint" />
-        <joint name="wrist_3_link-tool0_fixed_joint" />
+        <chain base_link="tool0" tip_link="left_inner_finger" />
     </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="up" group="manipulator">
         <joint name="elbow_joint" value="0" />
-        <joint name="shoulder_lift_joint" value="-1.5705" />
+        <joint name="shoulder_lift_joint" value="-1.57" />
         <joint name="shoulder_pan_joint" value="0" />
         <joint name="wrist_1_joint" value="0" />
-        <joint name="wrist_2_joint" value="1.5705" />
+        <joint name="wrist_2_joint" value="1.57" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
     <group_state name="home" group="manipulator">
@@ -42,18 +42,44 @@
         <joint name="wrist_2_joint" value="0" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
+    <group_state name="open" group="eef">
+        <joint name="finger_joint" value="0" />
+        <joint name="left_inner_finger_joint" value="0" />
+        <joint name="left_inner_knuckle_joint" value="0" />
+        <joint name="right_inner_finger_joint" value="0" />
+        <joint name="right_inner_knuckle_joint" value="0" />
+        <joint name="right_outer_knuckle_joint" value="0" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="end_effector" parent_link="ee_link" group="eef" parent_group="manipulator" />
+    <end_effector name="end_effector" parent_link="tool0" group="eef" parent_group="manipulator" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="fixed_world" type="fixed" parent_frame="fixed_world" child_link="world" />
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
-    <passive_joint name="right_outer_knuckle_joint" />
-    <passive_joint name="right_inner_finger_joint" />
+    <passive_joint name="finger_joint" />
     <passive_joint name="left_inner_finger_joint" />
     <passive_joint name="left_inner_knuckle_joint" />
     <passive_joint name="right_inner_knuckle_joint" />
+    <passive_joint name="right_outer_knuckle_joint" />
+    <passive_joint name="right_inner_finger_joint" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="base_link" link2="camera_link" reason="Adjacent" />
     <disable_collisions link1="base_link" link2="shoulder_link" reason="Adjacent" />
+    <disable_collisions link1="camera_link" link2="ee_link" reason="Never" />
+    <disable_collisions link1="camera_link" link2="forearm_link" reason="Never" />
+    <disable_collisions link1="camera_link" link2="left_inner_finger" reason="Never" />
+    <disable_collisions link1="camera_link" link2="left_inner_knuckle" reason="Never" />
+    <disable_collisions link1="camera_link" link2="left_outer_finger" reason="Never" />
+    <disable_collisions link1="camera_link" link2="left_outer_knuckle" reason="Never" />
+    <disable_collisions link1="camera_link" link2="right_inner_finger" reason="Never" />
+    <disable_collisions link1="camera_link" link2="right_inner_knuckle" reason="Never" />
+    <disable_collisions link1="camera_link" link2="right_outer_finger" reason="Never" />
+    <disable_collisions link1="camera_link" link2="right_outer_knuckle" reason="Never" />
+    <disable_collisions link1="camera_link" link2="robotiq_arg2f_base_link" reason="Never" />
+    <disable_collisions link1="camera_link" link2="shoulder_link" reason="Never" />
+    <disable_collisions link1="camera_link" link2="upper_arm_link" reason="Never" />
+    <disable_collisions link1="camera_link" link2="wrist_1_link" reason="Never" />
+    <disable_collisions link1="camera_link" link2="wrist_2_link" reason="Never" />
+    <disable_collisions link1="camera_link" link2="wrist_3_link" reason="Never" />
     <disable_collisions link1="ee_link" link2="left_inner_finger" reason="Never" />
     <disable_collisions link1="ee_link" link2="left_inner_knuckle" reason="Never" />
     <disable_collisions link1="ee_link" link2="left_outer_finger" reason="Never" />
