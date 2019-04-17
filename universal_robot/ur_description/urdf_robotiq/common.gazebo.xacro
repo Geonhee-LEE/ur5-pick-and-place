@@ -50,11 +50,11 @@
               <updateRate>10.0</updateRate>
               <cameraName>fixed_camera</cameraName>
               <frameName>camera_link</frameName>                   
-          <imageTopicName>fixed_camera/rgb/image_raw</imageTopicName>
-          <depthImageTopicName>fixed_camera/depth/image_raw</depthImageTopicName>
-          <pointCloudTopicName>fixed_camera/depth/points</pointCloudTopicName>
-          <cameraInfoTopicName>fixed_camera/rgb/camera_info</cameraInfoTopicName>              
-          <depthImageCameraInfoTopicName>fixed_camera/depth/camera_info</depthImageCameraInfoTopicName>            
+          <imageTopicName>/rgb/image_raw</imageTopicName>
+          <depthImageTopicName>/depth/image_raw</depthImageTopicName>
+          <pointCloudTopicName>/depth/points</pointCloudTopicName>
+          <cameraInfoTopicName>/rgb/camera_info</cameraInfoTopicName>              
+          <depthImageCameraInfoTopicName>/depth/camera_info</depthImageCameraInfoTopicName>            
           <pointCloudCutoff>0.4</pointCloudCutoff>                
               <hackBaseline>0.07</hackBaseline>
               <distortionK1>0.0</distortionK1>
@@ -77,17 +77,4 @@
   </gazebo>
 
 
-  <!-- Gazebo grasping plugin -->
-  <gazebo>
-    <gripper name="gazebo_gripper">
-      <grasp_check>
-        <attach_steps>2</attach_steps>    <!-- default: 20 -->
-        <detach_steps>2</detach_steps>    <!-- default: 40 -->
-        <min_contact_count>3</min_contact_count>
-      </grasp_check>
-      <gripper_link>left_outer_knuckle</gripper_link>
-      <gripper_link>right_outer_knuckle</gripper_link>
-      <palm_link>robotiq_arg2f_base_link</palm_link>
-    </gripper>
-  </gazebo>
 </robot>

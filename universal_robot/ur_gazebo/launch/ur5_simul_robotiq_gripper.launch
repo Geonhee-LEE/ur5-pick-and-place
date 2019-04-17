@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+  <!-- Launch file parameters -->
   <arg name="limited" default="true"  doc="If true, limits joint range [-PI, PI] on all joints." />
   <arg name="paused" default="false" doc="Starts gazebo in paused mode" />
   <arg name="gui" default="true" doc="Starts gazebo gui" />
@@ -12,23 +13,23 @@
   </include>
 
   <!-- send robot urdf to param server -->
-  <include file="$(find ur_description)/launch/ur5_robotiq_gripper_upload.launch">
+  <include file="$(find ur_description)/launch/ur5_robotiq85_gripper_upload.launch">
     <arg name="limited" value="$(arg limited)"/>
   </include>
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.2 -y 0.7" respawn="false" output="screen" />
-  <include file="$(find ur_gazebo)/launch/controller_utils.launch"/>
-  <rosparam file="$(find ur_gazebo)/controller/arm_controller_ur5.yaml" command="load"/>
-  <rosparam file="$(find ur_gazebo)/controller/gripper_controller.yaml" command="load"/>
-
+  <rosparam file="$(find ur_gazebo)/controller/ur5gripper_controllers.yaml" command="load"/>
+ 
 
   <!-- PID Gain -->
   <!--rosparam file="$(find ur_gazebo)/controller/pid_for_gazebo_ros_control.yaml" command="load"/-->
   
-  <!-- Gazebo controller -->
-  <node name="robot_controllers" pkg="controller_manager" type="spawner" args=" arm_controller gripper_controller" respawn="false" output="screen"/>
- 
+   <!-- Load controllers -->
+  <node name="robot_controllers" pkg="controller_manager" type="spawner"
+        output="screen"
+        args="joint_state_controller trajectory_controller gripper_controller"/>
+
   <!-- TF -->
   <node pkg="robot_state_publisher" type="state_publisher"
         name="state_publisher">
