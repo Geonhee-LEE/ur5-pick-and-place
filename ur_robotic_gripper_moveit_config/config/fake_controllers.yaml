@@ -9,4 +9,4 @@ controller_list:
       - wrist_3_joint
   - name: fake_eef_controller
     joints:
-      []
+      - robotiq_85_left_knuckle_joint

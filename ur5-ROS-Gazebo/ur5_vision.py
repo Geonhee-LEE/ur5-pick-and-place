@@ -31,10 +31,11 @@ import moveit_msgs.msg
 import cv2, cv_bridge
 from sensor_msgs.msg import Image
 
-
 from std_msgs.msg import Header
 from trajectory_msgs.msg import JointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
+
+
 tracker = Tracker()
 class ur5_vision:
     def __init__(self):
@@ -44,11 +45,11 @@ class ur5_vision:
         self.cx = 400.0
         self.cy = 400.0
         self.bridge = cv_bridge.CvBridge()
-        self.image_sub = rospy.Subscriber('/ur5/usbcam/image_raw', Image, self.image_callback)
+        self.image_sub = rospy.Subscriber('/rgb/image_raw', Image, self.image_callback)
         self.cxy_pub = rospy.Publisher('cxy', Tracker, queue_size=1)
 
 
-    def image_callback(self,msg):
+    def image_callback(self, msg):
         # BEGIN BRIDGE
         image = self.bridge.imgmsg_to_cv2(msg,desired_encoding='bgr8')
         # END BRIDGE
@@ -70,6 +71,7 @@ class ur5_vision:
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
 
+
         # cx range (55,750) cy range( 55, ~ )
         # END FINDER
         # Isolate largest contour
@@ -77,7 +79,7 @@ class ur5_vision:
         #  biggest_contour = max(contour_sizes, key=lambda x: x[0])[1]
             for i, c in enumerate(cnts):
                 area = cv2.contourArea(c)
-                if area > 7500:
+                if area > 10:
                     self.track_flag = True
                     self.cx = cx
                     self.cy = cy
@@ -99,10 +101,15 @@ class ur5_vision:
                 else:
                     self.track_flag = False
                     tracker.flag1 = self.track_flag
+                    self.cx = 0
+                    self.cy = 0
+                    self.error_x = 0
+                    self.error_y = 0
 
 
         self.cxy_pub.publish(tracker)
         cv2.namedWindow("window", 1)
+        cv2.moveWindow("window", 320,240)
         cv2.imshow("window", image )
         cv2.waitKey(1)
 

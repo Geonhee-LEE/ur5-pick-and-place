@@ -5,7 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1
-        - /MotionPlanning1/Planning Request1
+        - /MotionPlanning1/Scene Geometry1
+        - /MotionPlanning1/Planning Metrics1
       Splitter Ratio: 0.742560029
     Tree Height: 405
   - Class: rviz/Help
@@ -95,47 +96,52 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          left_inner_finger:
+          robotiq_85_base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          left_inner_knuckle:
+          robotiq_85_left_finger_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          left_outer_finger:
+          robotiq_85_left_finger_tip_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          left_outer_knuckle:
+          robotiq_85_left_inner_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_inner_finger:
+          robotiq_85_left_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_inner_knuckle:
+          robotiq_85_right_finger_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_outer_finger:
+          robotiq_85_right_finger_tip_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_outer_knuckle:
+          robotiq_85_right_inner_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robotiq_arg2f_base_link:
+          robotiq_85_right_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robotiq_coupler:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -173,15 +179,15 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-        Loop Animation: true
+        Loop Animation: false
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
         Show Robot Collision: false
         Show Robot Visual: true
-        Show Trail: false
-        State Display Time: 0.05 s
+        Show Trail: true
+        State Display Time: REALTIME
         Trail Step Size: 1
-        Trajectory Topic: move_group/display_planned_path
+        Trajectory Topic: /move_group/display_planned_path
       Planning Metrics:
         Payload: 1
         Show Joint Torques: false
@@ -193,7 +199,7 @@ Visualization Manager:
         Colliding Link Color: 255; 0; 0
         Goal State Alpha: 1
         Goal State Color: 250; 128; 0
-        Interactive Marker Size: 0.150000006
+        Interactive Marker Size: 0.200000003
         Joint Violation Color: 255; 0; 255
         Planning Group: manipulator
         Query Goal State: true
@@ -242,47 +248,52 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          left_inner_finger:
+          robotiq_85_base_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          left_inner_knuckle:
+          robotiq_85_left_finger_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          left_outer_finger:
+          robotiq_85_left_finger_tip_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          left_outer_knuckle:
+          robotiq_85_left_inner_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_inner_finger:
+          robotiq_85_left_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_inner_knuckle:
+          robotiq_85_right_finger_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_outer_finger:
+          robotiq_85_right_finger_tip_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          right_outer_knuckle:
+          robotiq_85_right_inner_knuckle_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
-          robotiq_arg2f_base_link:
+          robotiq_85_right_knuckle_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          robotiq_coupler:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -341,25 +352,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 1.98364377
+      Distance: 4.96970654
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.506529152
-        Y: -0.00867813826
-        Z: 7.00355145e-07
+        X: 0.430573821
+        Y: -0.101814047
+        Z: -1.49005785e-08
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.60979706
+      Pitch: 0.414797336
       Target Frame: world
       Value: XYOrbit (rviz)
-      Yaw: 1.13676488
+      Yaw: 3.32994843
     Saved: ~
 Window Geometry:
   Displays:
@@ -377,5 +388,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1828
-  X: 92
+  X: 123
   Y: 198

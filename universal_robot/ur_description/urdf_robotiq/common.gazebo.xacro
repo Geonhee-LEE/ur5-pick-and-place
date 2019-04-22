@@ -49,7 +49,7 @@
           <alwaysOn>true</alwaysOn>
               <updateRate>10.0</updateRate>
               <cameraName>fixed_camera</cameraName>
-              <frameName>camera_link</frameName>                   
+              <frameName>points_frame</frameName>                   
           <imageTopicName>/rgb/image_raw</imageTopicName>
           <depthImageTopicName>/depth/image_raw</depthImageTopicName>
           <pointCloudTopicName>/depth/points</pointCloudTopicName>

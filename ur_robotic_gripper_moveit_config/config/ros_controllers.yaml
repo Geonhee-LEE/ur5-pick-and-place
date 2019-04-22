@@ -16,6 +16,7 @@ ur5:
       - wrist_1_joint
       - wrist_2_joint
       - wrist_3_joint
+      - robotiq_85_left_knuckle_joint
     sim_control_mode: 1  # 0: position, 1: velocity
 # Publish all joint states
 # Creates the /joint_states topic necessary in ROS
@@ -34,9 +35,3 @@ ur5:
         - wrist_1_joint
         - wrist_2_joint
         - wrist_3_joint
-    - name: eef_controller
-      action_ns: follow_joint_trajectory
-      default: True
-      type: FollowJointTrajectory
-      joints:
-        []
