@@ -5,13 +5,17 @@ universal_robot
 
 This repository provides ROS support for the universal robots.  This repo holds source code for all versions > groovy.  For those versions <= groovy see: hg https://kforge.ros.org/ros_industrial/universal_robot
 
+__Installation about GAZEBO 9.0:__
 
-__Installation from Source__  
-There are releases available for ROS Hydro and ROS Indigo. However, for the latest features and developments you might want to install from source.
+```
+ sudo apt-get install ros-kinetic-gazebo9-ros-pkgs ros-kinetic-gazebo9-ros-control ros-kinetic-gazebo9* 
+```
 
-First set up a catkin workspace (see [this tutorials](http://wiki.ros.org/catkin/Tutorials)).  
-Then clone the repository into the src/ folder. It should look like /path/to/your/catkin_workspace/src/universal_robot.  
-Make sure to source the correct setup file according to your workspace hierarchy, then use ```catkin_make``` to compile.  
+__Installation of UR modern control instead of ur_drive:__
+
+```
+sudo apt-get install ros-kinetic-industrial-msgs 
+```
 
 ---
 
@@ -23,15 +27,16 @@ Don't forget to source the correct setup shell files and use a new terminal for 
 
 To bring up the real robot, run:
 
-```roslaunch ur_bringup ur5_bringup.launch robot_ip:=IP_OF_THE_ROBOT [reverse_port:=REVERSE_PORT]```
+```roslaunch ur_modern_driver ur5_bringup.launch robot_ip:=ROBOT_IP_ADDRESS```
 
 A simple test script that moves the robot to predefined positions can be executed like this:
 
 ```rosrun ur_driver test_move.py```
 
-
 CAUTION:  
 Remember that you should always have your hands on the big red button in case there is something in the way or anything unexpected happens.
+
+
 
 
 __MoveIt! with real Hardware__  
