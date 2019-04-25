@@ -44,6 +44,11 @@ __Installation about GAZEBO 9.0:__
  sudo apt-get install ros-kinetic-gazebo9-ros-pkgs ros-kinetic-gazebo9-ros-control ros-kinetic-gazebo9* 
 ```
 
+__Installation of UR modern control instead of ur_drive:__
+
+```
+sudo apt-get install ros-kinetic-industrial-msgs 
+```
 
 ---
 
@@ -91,7 +96,7 @@ Don't forget to source the correct setup shell files and use a new terminal for 
 
 To bring up the real robot, run:
 
-```roslaunch ur_bringup ur5_bringup.launch robot_ip:=IP_OF_THE_ROBOT [reverse_port:=REVERSE_PORT]```
+```roslaunch ur_modern_driver ur5_bringup.launch robot_ip:=ROBOT_IP_ADDRESS```
 
 A simple test script that moves the robot to predefined positions can be executed like this:
 
