@@ -44,6 +44,9 @@ def operate_gripper():
     # Use pre-defined functions for robot gripper manipulation.
     #####################################################################################
     while not rospy.is_shutdown():
+        Robotiq.close(robotiq_client, block=True)   # Close and wait until completion
+        Robotiq.open(robotiq_client, block=False)   # Open and do not block thread while completing goal
+
         Robotiq.goto(robotiq_client, pos=0.00, speed=0.1, force=100 , block=True)
         Robotiq.goto(robotiq_client, pos=0.04, speed=0.01, force=10)
         Robotiq.goto(robotiq_client, pos=0.011, speed=0.01, force=0 , block=True)
