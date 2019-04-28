@@ -31,7 +31,7 @@ To bring up the real robot, run:
 
 A simple test script that moves the robot to predefined positions can be executed like this:
 
-```rosrun ur_driver test_move.py```
+```rosrun ur_modern_driver test_move.py```
 
 CAUTION:  
 Remember that you should always have your hands on the big red button in case there is something in the way or anything unexpected happens.
