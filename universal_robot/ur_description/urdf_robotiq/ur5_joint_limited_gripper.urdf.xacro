@@ -7,7 +7,8 @@
 
   <!-- ur5 -->
   <xacro:include filename="$(find ur_description)/urdf_robotiq/ur5.urdf.xacro" />
-  <xacro:include filename="$(find robotiq_2f_140_gripper_visualization)/urdf/robotiq_arg2f_140_model.xacro"/>
+
+  <xacro:include filename="$(find robotiq_2f_140_gripper_visualization)/urdf/robotiq_arg2f_140_model.xacro" />
 
   <!-- arm -->
   <xacro:ur5_robot prefix="" joint_limited="true"/>
@@ -21,41 +22,12 @@
   </joint>
 
 
-  <!-- Robotiq Coupler -->
-  <!--  + Height added by the coupler: 8mm -->
-  <!--  + Reference frame: at the middle (4mm) -->
+
   <joint name="robotiq_coupler_joint" type="fixed">
     <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2.0}" />
     <parent link="tool0"/>
     <child link="robotiq_arg2f_base_link"/>
   </joint>
-  
-  
-  <!-- Gazebo FT sensor plugin -->
-  <!--gazebo reference="wrist_3_joint">
-    <provideFeedback>true</provideFeedback>
-  </gazebo>
-  <gazebo>
-    <plugin name="ft_sensor_plugin" filename="libgazebo_ros_ft_sensor.so">
-      <updateRate>250.0</updateRate>
-      <topicName>ft_sensor/raw</topicName>
-      <gaussianNoise>0.0</gaussianNoise>
-      <jointName>wrist_3_joint</jointName>
-    </plugin>
-  </gazebo-->
-  
-  <link name="camera_link">
-    <visual>
-      <geometry>
-      <mesh filename="package://ur_description/meshes/kinect/meshes/kinect.dae"/>
-      </geometry>
-    </visual>
-  </link>
-  <joint name="camera_joint" type="fixed">
-    <parent link="base_link" />
-    <child link = "camera_link" />
-    <origin xyz="0.0 0.0 2.0" rpy="0.0 ${pi/2} 0.0" />
-  </joint>
 
-
+  
 </robot>
