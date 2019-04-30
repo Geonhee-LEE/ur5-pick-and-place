@@ -60,9 +60,9 @@ Visualization Manager:
         Center:
           X: 0
           Y: 0
-          Z: 0
+          Z: 1
         Size:
-          X: 2
+          X: 1
           Y: 2
           Z: 2
       Name: MotionPlanning
@@ -336,9 +336,34 @@ Visualization Manager:
             Value: true
         Robot Alpha: 0.5
         Show Robot Collision: false
-        Show Robot Visual: true
+        Show Robot Visual: false
       Value: true
       Velocity_Scaling_Factor: 1
+    - Class: rviz/InteractiveMarkers
+      Enable Transparency: true
+      Enabled: true
+      Name: InteractiveMarkers
+      Show Axes: false
+      Show Descriptions: true
+      Show Visual Aids: false
+      Update Topic: /interactive_robot_imarkers/update
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /interactive_robot_markers
+      Name: Marker
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /interactive_robot_marray
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -351,45 +376,46 @@ Visualization Manager:
       Hide Inactive Objects: true
     - Class: rviz/MoveCamera
     - Class: rviz/Select
+    - Class: rviz_visual_tools/KeyTool
   Value: true
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.99650002
+      Distance: 2.9029479
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.113567002
-        Y: 0.105920002
-        Z: 2.23518001e-07
+        X: 0.782346845
+        Y: 0.988943875
+        Z: 1.29640159e-06
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.219797075
+      Pitch: 0.409796357
       Target Frame: world
       Value: XYOrbit (rviz)
-      Yaw: 1.43176818
+      Yaw: 1.38859546
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: false
+    collapsed: true
   Height: 1028
   Help:
     collapsed: false
-  Hide Left Dock: false
+  Hide Left Dock: true
   Hide Right Dock: false
   MotionPlanning:
-    collapsed: false
+    collapsed: true
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002ad000003befc0200000007fb000000100044006900730070006c00610079007301000000280000022a000000d700fffffffb0000000800480065006c00700000000342000000bb0000007300fffffffb0000000a0056006900650077007300000003b0000000b0000000ad00fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004a00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000002580000018e0000018300ffffff00000471000003be00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002ad000003befc0200000007fb000000100044006900730070006c00610079007300000000280000022a000000d700fffffffb0000000800480065006c00700000000342000000bb0000007300fffffffb0000000a0056006900650077007300000003b0000000b0000000ad00fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004a00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006700000002580000018e0000018300ffffff000003a9000003be00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
-  Width: 1828
-  X: 92
+  Width: 937
+  X: 47
   Y: 623
