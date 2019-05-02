@@ -1,10 +1,15 @@
 /*
+<<<<<<< HEAD
  *  UR5 move group interface
+=======
+ * zetabot navigation
+>>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
  *
  *  Created on: 2019. 05. 01.
  *      Author: Geonhee-LEE
  */
 
+<<<<<<< HEAD
 
 #include "ur_move_group_interface.h"
 
@@ -26,12 +31,19 @@ URMoveGroup::URMoveGroup()
     init_move_group(move_group);
     init_visualization(visual_tools);
     start(move_group, visual_tools);
+=======
+#include "ur_move_group_interface.h"
+
+URMoveGroup::URMoveGroup()
+{
+>>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
 }
 
 
 URMoveGroup::~URMoveGroup()
 {
 }
+<<<<<<< HEAD
 
 void URMoveGroup::init_move_group(MoveGroupInterface& move_group)
 {
@@ -237,3 +249,5 @@ void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visua
 
     
 }
+=======
+>>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
