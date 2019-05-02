@@ -26,10 +26,10 @@
 #include <string>
 #include <iostream>
 
-<<<<<<< HEAD
+ 
 
-=======
->>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
+ 
+ 
 class URMoveGroup
 {
     public:
@@ -37,7 +37,7 @@ class URMoveGroup
         ~URMoveGroup(void);
     private:
         ros::NodeHandle nh_;
-<<<<<<< HEAD
+ 
     public:
         std::string PLANNING_GROUP;
 
@@ -84,10 +84,10 @@ class URMoveGroup
         void plan2goal(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools& , geometry_msgs::Pose);
         void plan4joint_space(moveit::planning_interface::MoveGroupInterface&, std::vector<double>);
         void plan4joint_space(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, std::vector<double>);
-=======
+ 
 
     public:
->>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
+ 
 };
 
 

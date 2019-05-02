@@ -4,19 +4,13 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-<<<<<<< HEAD
-=======
         - /MotionPlanning1
->>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
         - /MotionPlanning1/Scene Geometry1
         - /MotionPlanning1/Scene Robot1
         - /MotionPlanning1/Planning Request1
         - /MotionPlanning1/Planning Metrics1
         - /MotionPlanning1/Planned Path1
-<<<<<<< HEAD
         - /MarkerArray1
-=======
->>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
       Splitter Ratio: 0.742560029
     Tree Height: 405
   - Class: rviz/Help
@@ -365,20 +359,12 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-<<<<<<< HEAD
       Marker Topic: /rviz_visual_tools
       Name: MarkerArray
       Namespaces:
         Cylinder: true
         Sphere: true
         Text: true
-        pose1: true
-=======
-      Marker Topic: /interactive_robot_marray
-      Name: MarkerArray
-      Namespaces:
-        {}
->>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
       Queue Size: 100
       Value: true
   Enabled: true
@@ -398,42 +384,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-<<<<<<< HEAD
-      Distance: 3.44882965
-=======
-      Distance: 2.9029479
->>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
+      Distance: 5.1957221
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-<<<<<<< HEAD
-        X: 0.271057338
-        Y: 1.32207549
-        Z: 1.41561077e-06
-=======
-        X: 0.782346845
-        Y: 0.988943875
-        Z: 1.29640159e-06
->>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
+        X: 0.449120849
+        Y: 0.924880803
+        Z: 1.89244793e-06
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-<<<<<<< HEAD
-      Pitch: 0.529796362
+      Pitch: 0.644796193
       Target Frame: world
       Value: XYOrbit (rviz)
-      Yaw: 1.7185955
-=======
-      Pitch: 0.409796357
-      Target Frame: world
-      Value: XYOrbit (rviz)
-      Yaw: 1.38859546
->>>>>>> 5de897b5a48559fb58ef7126f6104d75766aa509
+      Yaw: 1.65359521
     Saved: ~
 Window Geometry:
   Displays:
