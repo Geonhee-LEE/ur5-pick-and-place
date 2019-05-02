@@ -7,34 +7,34 @@ joint_limits:
     max_velocity: 3.15
     has_acceleration_limits: false
     max_acceleration: 0
-  finger_joint:
+  robotiq_85_left_finger_tip_joint:
     has_velocity_limits: true
-    max_velocity: 2
+    max_velocity: 100
     has_acceleration_limits: false
     max_acceleration: 0
-  left_inner_finger_joint:
+  robotiq_85_left_inner_knuckle_joint:
     has_velocity_limits: true
-    max_velocity: 2
+    max_velocity: 100
     has_acceleration_limits: false
     max_acceleration: 0
-  left_inner_knuckle_joint:
+  robotiq_85_left_knuckle_joint:
     has_velocity_limits: true
-    max_velocity: 2
+    max_velocity: 0.5
     has_acceleration_limits: false
     max_acceleration: 0
-  right_inner_finger_joint:
+  robotiq_85_right_finger_tip_joint:
     has_velocity_limits: true
-    max_velocity: 2
+    max_velocity: 100
     has_acceleration_limits: false
     max_acceleration: 0
-  right_inner_knuckle_joint:
+  robotiq_85_right_inner_knuckle_joint:
     has_velocity_limits: true
-    max_velocity: 2
+    max_velocity: 100
     has_acceleration_limits: false
     max_acceleration: 0
-  right_outer_knuckle_joint:
+  robotiq_85_right_knuckle_joint:
     has_velocity_limits: true
-    max_velocity: 2
+    max_velocity: 100
     has_acceleration_limits: false
     max_acceleration: 0
   shoulder_lift_joint:

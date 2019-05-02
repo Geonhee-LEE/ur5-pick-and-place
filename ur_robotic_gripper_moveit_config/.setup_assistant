@@ -1,11 +1,11 @@
 moveit_setup_assistant_config:
   URDF:
     package: ur_description
-    relative_path: urdf_robotiq/ur5_joint_limited_gripper.urdf.xacro
+    relative_path: urdf_robotiq/ur5_simul_gripper.urdf.xacro
     xacro_args: "--inorder "
   SRDF:
     relative_path: config/ur5.srdf
   CONFIG:
     author_name: Geonhee
     author_email: gunhee6392@gmail.com
-    generated_timestamp: 1555471867
+    generated_timestamp: 1555928136
