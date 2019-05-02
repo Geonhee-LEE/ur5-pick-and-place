@@ -69,9 +69,9 @@ void URMoveGroup::init_visualization(MoveItVisualTools& visual_tools)
     visual_tools.loadRemoteControl();
 
     // RViz provides many types of markers, in this demo we will use text, cylinders, and spheres
-    _text_pose = Eigen::Affine3d::Identity();
-    _text_pose.translation().z() = 1.75;
-    visual_tools.publishText(_text_pose, "MoveGroupInterface Demo", rvt::WHITE, rvt::XLARGE);
+     _text_pose = Eigen::Affine3d::Identity();
+     _text_pose.translation().z() = 1.75;
+    visual_tools.publishText( _text_pose, "MoveGroupInterface Demo", rvt::WHITE, rvt::XLARGE);
     visual_tools.trigger();
     // Batch publishing is used to reduce the number of messages being sent to RViz for large visualizations
     // Start the demo
@@ -154,7 +154,7 @@ void URMoveGroup::plan2goal(MoveGroupInterface& move_group, MoveItVisualTools& v
     // We can also visualize the plan as a line with markers in RViz.
     ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
     visual_tools.publishAxisLabeled(target_pose, "pose1");
-    visual_tools.publishText(_text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
+    visual_tools.publishText( _text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
     visual_tools.publishTrajectoryLine(_plan.trajectory_, joint_model_group);
     visual_tools.trigger();
     visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
@@ -199,7 +199,7 @@ void URMoveGroup::plan4joint_space(MoveGroupInterface& move_group, MoveItVisualT
 
     // Visualize the plan in RViz
     visual_tools.deleteAllMarkers();
-    visual_tools.publishText(_text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
+    visual_tools.publishText( _text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
     visual_tools.publishTrajectoryLine(_plan.trajectory_, joint_model_group);
     visual_tools.trigger();
     visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");    
@@ -222,6 +222,91 @@ std::vector<double> URMoveGroup::copyJointGroupPosition()
     return target_joint_group_positions;
 }
 
+void URMoveGroup::plan_with_path_constraint(MoveGroupInterface& move_group,  moveit_msgs::OrientationConstraint ocm, geometry_msgs::Pose start_pose, geometry_msgs::Pose target_pose)
+{
+
+  ////// Planning with Path Constraints
+  // Path constraints can easily be specified for a link on the robot.
+
+  // Now, set it as the path constraint for the group.
+  moveit_msgs::Constraints test_constraints;
+  test_constraints.orientation_constraints.push_back(ocm);
+  move_group.setPathConstraints(test_constraints);
+
+  // We will reuse the old goal that we had and plan to it.
+  // Note that this will only work if the current state already
+  // satisfies the path constraints. So, we need to set the start
+  // state to a new pose.
+  robot_state::RobotState start_state(*move_group.getCurrentState());
+
+  start_state.setFromIK(joint_model_group, start_pose);
+  move_group.setStartState(start_state);
+
+  // Now we will plan to the earlier pose target from the new
+  // start state that we have just created.
+  move_group.setPoseTarget(target_pose);
+
+  // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
+  // Lets increase the planning time from the default 5 seconds to be sure the planner has enough time to succeed.
+  move_group.setPlanningTime(10.0);
+
+  success = (move_group.plan( _plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  ROS_INFO_NAMED("tutorial", "Visualizing plan 3 (constraints) %s", success ? "" : "FAILED");
+
+  // When done with the path constraint be sure to clear it.
+  move_group.clearPathConstraints();
+
+  // Since we set the start state we have to clear it before planning other paths
+  move_group.setStartStateToCurrentState();
+
+}
+        
+void URMoveGroup::plan_with_path_constraint(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, moveit_msgs::OrientationConstraint ocm, geometry_msgs::Pose start_pose, geometry_msgs::Pose target_pose)
+{    
+
+  ////// Planning with Path Constraints
+  // Path constraints can easily be specified for a link on the robot.
+
+  // Now, set it as the path constraint for the group.
+  moveit_msgs::Constraints test_constraints;
+  test_constraints.orientation_constraints.push_back(ocm);
+  move_group.setPathConstraints(test_constraints);
+
+  // We will reuse the old goal that we had and plan to it.
+  // Note that this will only work if the current state already
+  // satisfies the path constraints. So, we need to set the start
+  // state to a new pose.
+  robot_state::RobotState start_state(*move_group.getCurrentState());
+  start_state.setFromIK(joint_model_group, start_pose);
+  move_group.setStartState(start_state);
+
+  // Now we will plan to the earlier pose target from the new
+  // start state that we have just created.
+  move_group.setPoseTarget(target_pose);
+
+  // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
+  // Lets increase the planning time from the default 5 seconds to be sure the planner has enough time to succeed.
+  move_group.setPlanningTime(10.0);
+
+  success = (move_group.plan( _plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  ROS_INFO_NAMED("tutorial", "Visualizing plan 3 (constraints) %s", success ? "" : "FAILED");
+
+  // Visualize the plan in RViz
+  visual_tools.deleteAllMarkers();
+  visual_tools.publishAxisLabeled(start_pose, "start");
+  visual_tools.publishAxisLabeled(target_pose, "goal");
+  visual_tools.publishText( _text_pose, "Constrained Goal", rvt::WHITE, rvt::XLARGE);
+  visual_tools.publishTrajectoryLine( _plan.trajectory_, joint_model_group);
+  visual_tools.trigger();
+  visual_tools.prompt("next step");
+
+  // When done with the path constraint be sure to clear it.
+  move_group.clearPathConstraints();
+
+  // Since we set the start state we have to clear it before planning other paths
+  move_group.setStartStateToCurrentState();
+}
+
 void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools)
 {
     //Planning to a Pose goal
@@ -238,8 +323,24 @@ void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visua
     target_joint_group_positions[0] = -1.0;  // radians
     plan4joint_space(move_group, visual_tools, target_joint_group_positions);
 
+    //Path constraint
+    // Let's specify a path constraint and a pose goal for our group.
+    // First define the path constraint.
+    moveit_msgs::OrientationConstraint ocm;
+    ocm.link_name = "tool0";
+    ocm.header.frame_id = "base_link";
+    ocm.orientation.w = 1.0;
+    ocm.absolute_x_axis_tolerance = 0.1;
+    ocm.absolute_y_axis_tolerance = 0.1;
+    ocm.absolute_z_axis_tolerance = 0.1;
+    ocm.weight = 1.0;
 
-    
+    geometry_msgs::Pose start_pose;
+    start_pose.orientation.w = 1.0;
+    start_pose.position.x = 0.55;
+    start_pose.position.y = -0.05;
+    start_pose.position.z = 0.5;
+    plan_with_path_constraint(move_group, visual_tools, ocm, start_pose, target_pose);
 }
  
  

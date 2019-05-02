@@ -71,6 +71,9 @@ class URMoveGroup
         // Current state
         moveit::core::RobotStatePtr current_state;
 
+        // Plan result; true or false
+        bool success;
+
     public:
         void init_move_group(moveit::planning_interface::MoveGroupInterface& ); // Initialization of MoveIt group interface
         void init_visualization( moveit_visual_tools::MoveItVisualTools& );  // Initialization of visualization tools
@@ -84,8 +87,9 @@ class URMoveGroup
         void plan2goal(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools& , geometry_msgs::Pose);
         void plan4joint_space(moveit::planning_interface::MoveGroupInterface&, std::vector<double>);
         void plan4joint_space(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, std::vector<double>);
+        void plan_with_path_constraint(moveit::planning_interface::MoveGroupInterface&, moveit_msgs::OrientationConstraint ocm , geometry_msgs::Pose , geometry_msgs::Pose );
+        void plan_with_path_constraint(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, moveit_msgs::OrientationConstraint ocm, geometry_msgs::Pose , geometry_msgs::Pose );
  
-
     public:
  
 };
