@@ -56,6 +56,7 @@ class URMoveGroup
         const robot_state::JointModelGroup* joint_model_group;
 
         moveit_msgs::CollisionObject worktop_obj;
+        moveit_msgs::CollisionObject fixed_camera_obj;
         std::vector<moveit_msgs::CollisionObject> collision_objects;
 
         // Define a box to add to the world.
@@ -95,8 +96,8 @@ class URMoveGroup
         void plan_to_goal(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools& , geometry_msgs::Pose);
         void plan_joint_space(moveit::planning_interface::MoveGroupInterface&, std::vector<double>);
         void plan_joint_space(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, std::vector<double>);
-        void plan_with_path_constraint(moveit::planning_interface::MoveGroupInterface&, moveit_msgs::OrientationConstraint ocm , geometry_msgs::Pose , geometry_msgs::Pose );
-        void plan_with_path_constraint(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, moveit_msgs::OrientationConstraint ocm, geometry_msgs::Pose , geometry_msgs::Pose );
+        void plan_with_path_constraint(moveit::planning_interface::MoveGroupInterface&, moveit_msgs::OrientationConstraint ocm , geometry_msgs::Pose );
+        void plan_with_path_constraint(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, moveit_msgs::OrientationConstraint ocm, geometry_msgs::Pose );
         void plan_cartesian_space(moveit::planning_interface::MoveGroupInterface&, std::vector<geometry_msgs::Pose> );
         void plan_cartesian_space(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, std::vector<geometry_msgs::Pose>  );
  
