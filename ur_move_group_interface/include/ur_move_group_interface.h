@@ -70,6 +70,7 @@ class URMoveGroup
 
         // Current state
         moveit::core::RobotStatePtr current_state;
+        geometry_msgs::Pose current_pose;
 
         // Plan result; true or false
         bool success;
@@ -80,17 +81,18 @@ class URMoveGroup
         void start(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&);   // start
         void create_worktop(std::string collision_id);
 
-        void updateCurrentState(moveit::planning_interface::MoveGroupInterface&);
-        std::vector<double> copyJointGroupPosition();
+        void update_current_state(moveit::planning_interface::MoveGroupInterface&);
+        std::vector<double> get_current_jointgroup(moveit::planning_interface::MoveGroupInterface&);
 
-        void plan2goal(moveit::planning_interface::MoveGroupInterface&, geometry_msgs::Pose);
-        void plan2goal(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools& , geometry_msgs::Pose);
-        void plan4joint_space(moveit::planning_interface::MoveGroupInterface&, std::vector<double>);
-        void plan4joint_space(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, std::vector<double>);
+        void plan_to_goal(moveit::planning_interface::MoveGroupInterface&, geometry_msgs::Pose);
+        void plan_to_goal(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools& , geometry_msgs::Pose);
+        void plan_joint_space(moveit::planning_interface::MoveGroupInterface&, std::vector<double>);
+        void plan_joint_space(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, std::vector<double>);
         void plan_with_path_constraint(moveit::planning_interface::MoveGroupInterface&, moveit_msgs::OrientationConstraint ocm , geometry_msgs::Pose , geometry_msgs::Pose );
         void plan_with_path_constraint(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, moveit_msgs::OrientationConstraint ocm, geometry_msgs::Pose , geometry_msgs::Pose );
+        void plan_cartesian_space(moveit::planning_interface::MoveGroupInterface&, std::vector<geometry_msgs::Pose> );
+        void plan_cartesian_space(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, std::vector<geometry_msgs::Pose>  );
  
-    public:
  
 };
 

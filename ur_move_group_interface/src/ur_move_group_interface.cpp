@@ -69,8 +69,8 @@ void URMoveGroup::init_visualization(MoveItVisualTools& visual_tools)
     visual_tools.loadRemoteControl();
 
     // RViz provides many types of markers, in this demo we will use text, cylinders, and spheres
-     _text_pose = Eigen::Affine3d::Identity();
-     _text_pose.translation().z() = 1.75;
+    _text_pose = Eigen::Affine3d::Identity();
+    _text_pose.translation().z() = 1.75;
     visual_tools.publishText( _text_pose, "MoveGroupInterface Demo", rvt::WHITE, rvt::XLARGE);
     visual_tools.trigger();
     // Batch publishing is used to reduce the number of messages being sent to RViz for large visualizations
@@ -115,7 +115,7 @@ void URMoveGroup::create_worktop(std::string collision_id)
 }
 
 
-void URMoveGroup::plan2goal(MoveGroupInterface& move_group, geometry_msgs::Pose target_pose)
+void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, geometry_msgs::Pose target_pose)
 {
     // Planning to a Pose goal
     // We can plan a motion for this group to a desired pose for the end-effector.
@@ -137,7 +137,7 @@ void URMoveGroup::plan2goal(MoveGroupInterface& move_group, geometry_msgs::Pose 
     /* move_group.move(); */
 }
 
-void URMoveGroup::plan2goal(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, geometry_msgs::Pose target_pose)
+void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, geometry_msgs::Pose target_pose)
 {
     // Planning to a Pose goal
     // We can plan a motion for this group to a desired pose for the end-effector.
@@ -169,7 +169,7 @@ void URMoveGroup::plan2goal(MoveGroupInterface& move_group, MoveItVisualTools& v
     /* move_group.move(); */
 }
 
-void URMoveGroup::plan4joint_space(MoveGroupInterface& move_group, vector<double> target_joint_group_positions)
+void URMoveGroup::plan_joint_space(MoveGroupInterface& move_group, vector<double> target_joint_group_positions)
 {
     //// Planning to a joint-space goal
     // Let's set a joint space goal and move towards it.  This will replace the pose target we set above.
@@ -184,7 +184,7 @@ void URMoveGroup::plan4joint_space(MoveGroupInterface& move_group, vector<double
 
 }
         
-void URMoveGroup::plan4joint_space(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, vector<double> target_joint_group_positions)
+void URMoveGroup::plan_joint_space(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, vector<double> target_joint_group_positions)
 {
     //// Planning to a joint-space goal
     // Let's set a joint space goal and move towards it.  This will replace the pose target we set above.
@@ -205,18 +205,21 @@ void URMoveGroup::plan4joint_space(MoveGroupInterface& move_group, MoveItVisualT
     visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");    
 }
 
-void URMoveGroup::updateCurrentState(MoveGroupInterface& move_group)
+void URMoveGroup::update_current_state(MoveGroupInterface& move_group)
 {
     // Update current state global variable
     current_state = move_group.getCurrentState();
+    current_pose = move_group.getCurrentPose().pose;
 }
 
-std::vector<double> URMoveGroup::copyJointGroupPosition()
+std::vector<double> URMoveGroup::get_current_jointgroup(MoveGroupInterface& move_group)
 {
     // Copy joint_model_group to the join group position 
     // target_joint_group_positions[0(base_link), ..., 5(wrist3)]
     std::vector<double> target_joint_group_positions;
 
+    //Update current state
+    update_current_state(move_group);
     current_state->copyJointGroupPositions(joint_model_group, target_joint_group_positions);
 
     return target_joint_group_positions;
@@ -234,16 +237,13 @@ void URMoveGroup::plan_with_path_constraint(MoveGroupInterface& move_group,  mov
   move_group.setPathConstraints(test_constraints);
 
   // We will reuse the old goal that we had and plan to it.
-  // Note that this will only work if the current state already
-  // satisfies the path constraints. So, we need to set the start
-  // state to a new pose.
+  // Note that this will only work if the current state already satisfies the path constraints. So, we need to set the start state to a new pose.
   robot_state::RobotState start_state(*move_group.getCurrentState());
 
   start_state.setFromIK(joint_model_group, start_pose);
   move_group.setStartState(start_state);
 
-  // Now we will plan to the earlier pose target from the new
-  // start state that we have just created.
+  // Now we will plan to the earlier pose target from the new start state that we have just created.
   move_group.setPoseTarget(target_pose);
 
   // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
@@ -273,15 +273,12 @@ void URMoveGroup::plan_with_path_constraint(MoveGroupInterface& move_group, Move
   move_group.setPathConstraints(test_constraints);
 
   // We will reuse the old goal that we had and plan to it.
-  // Note that this will only work if the current state already
-  // satisfies the path constraints. So, we need to set the start
-  // state to a new pose.
+  // Note that this will only work if the current state already satisfies the path constraints. So, we need to set the start state to a new pose.
   robot_state::RobotState start_state(*move_group.getCurrentState());
   start_state.setFromIK(joint_model_group, start_pose);
   move_group.setStartState(start_state);
 
-  // Now we will plan to the earlier pose target from the new
-  // start state that we have just created.
+  // Now we will plan to the earlier pose target from the new start state that we have just created.
   move_group.setPoseTarget(target_pose);
 
   // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
@@ -307,6 +304,54 @@ void URMoveGroup::plan_with_path_constraint(MoveGroupInterface& move_group, Move
   move_group.setStartStateToCurrentState();
 }
 
+
+void URMoveGroup::plan_cartesian_space(MoveGroupInterface& move_group, std::vector<geometry_msgs::Pose>  waypoints)
+{
+
+
+}
+        
+void URMoveGroup::plan_cartesian_space(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, std::vector<geometry_msgs::Pose>  waypoints)
+{    
+
+    ////// Cartesian Paths
+    // You can plan a Cartesian path directly by specifying a list of waypoints for the end-effector to go through. 
+    // Note that we are starting from the new start state above.  
+    // The initial pose (start state) does not need to be added to the waypoint list but adding it can help with visualizations
+
+    // Cartesian motions are frequently needed to be slower for actions such as approach and retreat
+    // grasp motions. Here we demonstrate how to reduce the speed of the robot arm via a scaling factor
+    // of the maxiumum speed of each joint. Note this is not the speed of the end effector point.
+    move_group.setMaxVelocityScalingFactor(0.1);
+
+    // We want the Cartesian path to be interpolated at a resolution of 1 cm
+    // which is why we will specify 0.01 as the max step in Cartesian
+    // translation.  We will specify the jump threshold as 0.0, effectively disabling it.
+    // Warning - disabling the jump threshold while operating real hardware can cause
+    // large unpredictable motions of redundant joints and could be a safety issue
+    moveit_msgs::RobotTrajectory trajectory;
+    const double jump_threshold = 0.0;
+    const double eef_step = 0.01;
+    double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
+
+    // Get robot trajectory to which joint speeds will be added
+	robot_trajectory::RobotTrajectory robot_move_trajectory(move_group.getCurrentState()->getRobotModel(), "manipulator");
+		
+    // Second get a RobotTrajectory from trajectory
+	robot_move_trajectory.setRobotTrajectoryMsg(*move_group.getCurrentState(), trajectory);
+
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (Cartesian path) (%.2f%% acheived)", fraction * 100.0);
+
+    // Visualize the plan in RViz
+    visual_tools.deleteAllMarkers();
+    visual_tools.publishText(_text_pose, "Cartesian path", rvt::WHITE, rvt::XLARGE);
+    visual_tools.publishPath(waypoints, rvt::LIME_GREEN, rvt::SMALL);
+    for (std::size_t i = 0; i < waypoints.size(); ++i)
+        visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+}
+
 void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools)
 {
     //Planning to a Pose goal
@@ -315,13 +360,12 @@ void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visua
     target_pose.position.x = 0.20;
     target_pose.position.y = -0.4;
     target_pose.position.z = 0.7;
-    plan2goal(move_group, visual_tools, target_pose);
+    plan_to_goal(move_group, visual_tools, target_pose);
 
     //Planning to a joint-space goal
-    updateCurrentState(move_group);
-    std::vector<double> target_joint_group_positions = copyJointGroupPosition();
+    std::vector<double> target_joint_group_positions = get_current_jointgroup(move_group);
     target_joint_group_positions[0] = -1.0;  // radians
-    plan4joint_space(move_group, visual_tools, target_joint_group_positions);
+    plan_joint_space(move_group, visual_tools, target_joint_group_positions);
 
     //Path constraint
     // Let's specify a path constraint and a pose goal for our group.
@@ -337,10 +381,27 @@ void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visua
 
     geometry_msgs::Pose start_pose;
     start_pose.orientation.w = 1.0;
-    start_pose.position.x = 0.55;
-    start_pose.position.y = -0.05;
+    start_pose.position.x = 0.3;
+    start_pose.position.y = -0.35;
     start_pose.position.z = 0.5;
     plan_with_path_constraint(move_group, visual_tools, ocm, start_pose, target_pose);
+
+
+    // Cartesian Paths
+    update_current_state(move_group);
+    geometry_msgs::Pose target_crts_pose = current_pose;
+
+    std::vector<geometry_msgs::Pose> waypoints;
+    waypoints.push_back(target_crts_pose);
+    target_crts_pose.position.z -= 0.2;
+    waypoints.push_back(target_crts_pose);  
+    target_crts_pose.position.x -= 0.2;
+    waypoints.push_back(target_crts_pose);  
+    target_crts_pose.position.z += 0.2;
+    waypoints.push_back(target_crts_pose);  
+    target_crts_pose.position.x -= 0.2;
+    waypoints.push_back(target_crts_pose);  
+    plan_cartesian_space(move_group, visual_tools, waypoints);
 }
  
  
