@@ -8,6 +8,11 @@
   <!-- By default, we are not in debug mode -->
   <arg name="debug" default="false" />
 
+  <!-- Run the gripper as simulator -->
+  <include file="$(find robotiq_2f_gripper_control)/launch/robotiq_action_server.launch">
+    <arg name="sim" value="true"/>
+  </include>
+  <node pkg="robotiq_2f_gripper_control" name="robotiq_2f_client_sub" type="robotiq_2f_client_sub.py" output="screen"/>
   <!--
   By default, hide joint_state_publisher's GUI
 
