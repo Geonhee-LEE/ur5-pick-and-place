@@ -22,6 +22,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_eigen
   tf2_geometry_msgs
   tf2_ros
+  robotiq_2f_gripper_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -124,6 +125,7 @@ catkin_package(
     moveit_ros_planning_interface 
     moveit_visual_tools 
     tf2_geometry_msgs 
+    robotiq_2f_gripper_msgs
   DEPENDS 
     EIGEN3
 )

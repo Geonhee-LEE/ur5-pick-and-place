@@ -19,6 +19,9 @@ namespace rvt = rviz_visual_tools;
 
 URMoveGroup::URMoveGroup()
 {
+    gripper_pub = nh_.advertise<robotiq_2f_gripper_msgs::RobotiqGripperCommand>("gripper_command", 1000);
+
+
     PLANNING_GROUP = "manipulator";
 
     // The :move_group_interface:`MoveGroup` class can be easily
@@ -352,8 +355,17 @@ void URMoveGroup::plan_cartesian_space(MoveGroupInterface& move_group, MoveItVis
     visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 }
 
+void URMoveGroup::send_gripper(robotiq_2f_gripper_msgs::RobotiqGripperCommand command)
+{
+    gripper_pub.publish(command);
+}
+    
+
 void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools)
 {
+    gripper_cmd.position = 0;
+    send_gripper(gripper_cmd);
+
     //Planning to a Pose goal
     geometry_msgs::Pose target_pose;
     target_pose.orientation.w = 1.0;
@@ -402,6 +414,7 @@ void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visua
     target_crts_pose.position.x -= 0.2;
     waypoints.push_back(target_crts_pose);  
     plan_cartesian_space(move_group, visual_tools, waypoints);
+
 }
  
  

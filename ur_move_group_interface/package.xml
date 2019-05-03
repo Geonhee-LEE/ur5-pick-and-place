@@ -92,6 +92,8 @@
   <exec_depend>tf2_geometry_msgs</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
 
+  <depend>robotiq_2f_gripper_msgs</depend>
+
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

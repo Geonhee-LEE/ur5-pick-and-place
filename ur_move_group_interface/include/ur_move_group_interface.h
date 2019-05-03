@@ -22,6 +22,9 @@
 // TF2
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
+// Gripper
+#include <robotiq_2f_gripper_msgs/RobotiqGripperCommand.h>
+
 //c++
 #include <string>
 #include <iostream>
@@ -75,6 +78,10 @@ class URMoveGroup
         // Plan result; true or false
         bool success;
 
+        // Gripper message
+        robotiq_2f_gripper_msgs::RobotiqGripperCommand gripper_cmd;
+        ros::Publisher gripper_pub;
+
     public:
         void init_move_group(moveit::planning_interface::MoveGroupInterface& ); // Initialization of MoveIt group interface
         void init_visualization( moveit_visual_tools::MoveItVisualTools& );  // Initialization of visualization tools
@@ -93,7 +100,7 @@ class URMoveGroup
         void plan_cartesian_space(moveit::planning_interface::MoveGroupInterface&, std::vector<geometry_msgs::Pose> );
         void plan_cartesian_space(moveit::planning_interface::MoveGroupInterface&, moveit_visual_tools::MoveItVisualTools&, std::vector<geometry_msgs::Pose>  );
  
- 
+        void send_gripper(robotiq_2f_gripper_msgs::RobotiqGripperCommand );
 };
 
 
