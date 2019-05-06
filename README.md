@@ -36,9 +36,9 @@ A simple test script that moves the robot to predefined positions can be execute
 
  Total execution commands:
  
-```roslaunch ur_modern_driver total_bringup.launch
-roslaunch total_moveit_config total_moveit_planning_execution.launch
-```
+```roslaunch ur_modern_driver total_bringup.launch```
+```roslaunch total_moveit_config total_moveit_planning_execution.launch```
+
 
 CAUTION:  
 Remember that you should always have your hands on the big red button in case there is something in the way or anything unexpected happens.
