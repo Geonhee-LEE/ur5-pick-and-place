@@ -163,7 +163,7 @@ void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, geometry_msgs::Po
     // and report success on execution of a trajectory.
 
     /* Uncomment below line when working with a real robot */
-    /* move_group.move(); */
+    /**/ move_group.move(); 
 }
 
 void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, geometry_msgs::Pose target_pose)
@@ -195,7 +195,7 @@ void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, MoveItVisualTools
     // and report success on execution of a trajectory.
 
     /* Uncomment below line when working with a real robot */
-    /* move_group.move(); */
+    /**/ move_group.move(); 
 }
 
 void URMoveGroup::plan_joint_space(MoveGroupInterface& move_group, vector<double> target_joint_group_positions)
