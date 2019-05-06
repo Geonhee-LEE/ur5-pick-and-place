@@ -34,9 +34,11 @@ A simple test script that moves the robot to predefined positions can be execute
 
 ```rosrun ur_modern_driver test_move.py```
 
- Total execution commands:
+
+ Total execution commands(realsense, ur5, gripper):
  
 ```roslaunch ur_modern_driver total_bringup.launch```
+
 ```roslaunch total_moveit_config total_moveit_planning_execution.launch```
 
 
