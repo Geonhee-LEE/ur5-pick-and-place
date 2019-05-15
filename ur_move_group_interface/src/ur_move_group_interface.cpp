@@ -29,6 +29,8 @@ URMoveGroup::URMoveGroup()
     static MoveGroupInterface move_group(PLANNING_GROUP);
     static ::MoveItVisualTools visual_tools("base_link");
 
+    success = false;
+
     init_move_group(move_group);
     init_visualization(visual_tools);
     start(move_group, visual_tools);
@@ -152,7 +154,7 @@ void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, geometry_msgs::Po
     
     // Now, we call the planner to compute the plan and visualize it.
     // Note that we are just planning, not asking move_group to actually move the robot.
-    bool success = (move_group.plan(_plan) == MoveItErrorCode::SUCCESS);
+    success = (move_group.plan(_plan) == MoveItErrorCode::SUCCESS);
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
 
@@ -163,7 +165,8 @@ void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, geometry_msgs::Po
     // and report success on execution of a trajectory.
 
     /* Uncomment below line when working with a real robot */
-    /**/ move_group.move(); 
+    if(success)
+        move_group.move(); 
 }
 
 void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, geometry_msgs::Pose target_pose)
@@ -174,7 +177,7 @@ void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, MoveItVisualTools
     
     // Now, we call the planner to compute the plan and visualize it.
     // Note that we are just planning, not asking move_group to actually move the robot.
-    bool success = (move_group.plan(_plan) == MoveItErrorCode::SUCCESS);
+    success = (move_group.plan(_plan) == MoveItErrorCode::SUCCESS);
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
 
@@ -195,7 +198,8 @@ void URMoveGroup::plan_to_goal(MoveGroupInterface& move_group, MoveItVisualTools
     // and report success on execution of a trajectory.
 
     /* Uncomment below line when working with a real robot */
-    /**/ move_group.move(); 
+    if(success)
+        move_group.move(); 
 }
 
 void URMoveGroup::plan_joint_space(MoveGroupInterface& move_group, vector<double> target_joint_group_positions)
@@ -208,9 +212,11 @@ void URMoveGroup::plan_joint_space(MoveGroupInterface& move_group, vector<double
     // Now, let's modify one of the joints, plan to the new joint space goal and visualize the plan.
     move_group.setJointValueTarget(target_joint_group_positions);
 
-    bool success = (move_group.plan(_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    success = (move_group.plan(_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
     ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (joint space goal) %s", success ? "" : "FAILED");
 
+    if(success)
+        move_group.move(); 
 }
         
 void URMoveGroup::plan_joint_space(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, vector<double> target_joint_group_positions)
@@ -223,7 +229,7 @@ void URMoveGroup::plan_joint_space(MoveGroupInterface& move_group, MoveItVisualT
     // Now, let's modify one of the joints, plan to the new joint space goal and visualize the plan.
     move_group.setJointValueTarget(target_joint_group_positions);
 
-    bool success = (move_group.plan(_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    success = (move_group.plan(_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
     ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (joint space goal) %s", success ? "" : "FAILED");
 
     // Visualize the plan in RViz
@@ -232,6 +238,9 @@ void URMoveGroup::plan_joint_space(MoveGroupInterface& move_group, MoveItVisualT
     visual_tools.publishTrajectoryLine(_plan.trajectory_, joint_model_group);
     visual_tools.trigger();
     visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");    
+
+    if(success)
+        move_group.move(); 
 }
 
 void URMoveGroup::update_current_state(MoveGroupInterface& move_group)
@@ -289,62 +298,60 @@ void URMoveGroup::plan_with_path_constraint(MoveGroupInterface& move_group,  mov
     // Since we set the start state we have to clear it before planning other paths
     move_group.setStartStateToCurrentState();
 
+    if(success)
+        move_group.move(); 
 }
         
 void URMoveGroup::plan_with_path_constraint(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, moveit_msgs::OrientationConstraint ocm, geometry_msgs::Pose target_pose)
 {    
     update_current_state(move_group);
 
-  ////// Planning with Path Constraints
-  // Path constraints can easily be specified for a link on the robot.
+    ////// Planning with Path Constraints
+    // Path constraints can easily be specified for a link on the robot.
 
-  // Now, set it as the path constraint for the group.
-  moveit_msgs::Constraints test_constraints;
-  test_constraints.orientation_constraints.push_back(ocm);
-  move_group.setPathConstraints(test_constraints);
+    // Now, set it as the path constraint for the group.
+    moveit_msgs::Constraints test_constraints;
+    test_constraints.orientation_constraints.push_back(ocm);
+    move_group.setPathConstraints(test_constraints);
 
-  // We will reuse the old goal that we had and plan to it.
-  // Note that this will only work if the current state already satisfies the path constraints. So, we need to set the start state to a new pose.
-  robot_state::RobotState start_state(*move_group.getCurrentState());
-  start_state.setFromIK(joint_model_group, current_pose);
-  move_group.setStartState(start_state);
+    // We will reuse the old goal that we had and plan to it.
+    // Note that this will only work if the current state already satisfies the path constraints. So, we need to set the start state to a new pose.
+    robot_state::RobotState start_state(*move_group.getCurrentState());
+    start_state.setFromIK(joint_model_group, current_pose);
+    move_group.setStartState(start_state);
 
-  // Now we will plan to the earlier pose target from the new start state that we have just created.
-  move_group.setPoseTarget(target_pose);
+    // Now we will plan to the earlier pose target from the new start state that we have just created.
+    move_group.setPoseTarget(target_pose);
 
-  // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
-  // Lets increase the planning time from the default 5 seconds to be sure the planner has enough time to succeed.
-  move_group.setPlanningTime(10.0);
+    // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
+    // Lets increase the planning time from the default 5 seconds to be sure the planner has enough time to succeed.
+    move_group.setPlanningTime(10.0);
 
-  success = (move_group.plan( _plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-  ROS_INFO_NAMED("tutorial", "Visualizing plan 3 (constraints) %s", success ? "" : "FAILED");
+    success = (move_group.plan( _plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 3 (constraints) %s", success ? "" : "FAILED");
 
-  // Visualize the plan in RViz
-  visual_tools.deleteAllMarkers();
-  visual_tools.publishAxisLabeled(current_pose, "start");
-  visual_tools.publishAxisLabeled(target_pose, "goal");
-  visual_tools.publishText( _text_pose, "Constrained Goal", rvt::WHITE, rvt::XLARGE);
-  visual_tools.publishTrajectoryLine( _plan.trajectory_, joint_model_group);
-  visual_tools.trigger();
-  visual_tools.prompt("next step");
+    // Visualize the plan in RViz
+    visual_tools.deleteAllMarkers();
+    visual_tools.publishAxisLabeled(current_pose, "start");
+    visual_tools.publishAxisLabeled(target_pose, "goal");
+    visual_tools.publishText( _text_pose, "Constrained Goal", rvt::WHITE, rvt::XLARGE);
+    visual_tools.publishTrajectoryLine( _plan.trajectory_, joint_model_group);
+    visual_tools.trigger();
+    visual_tools.prompt("next step");
 
-  // When done with the path constraint be sure to clear it.
-  move_group.clearPathConstraints();
+    // When done with the path constraint be sure to clear it.
+    move_group.clearPathConstraints();
 
-  // Since we set the start state we have to clear it before planning other paths
-  move_group.setStartStateToCurrentState();
+    // Since we set the start state we have to clear it before planning other paths
+    move_group.setStartStateToCurrentState();
+
+    if(success)
+        move_group.move(); 
 }
 
 
 void URMoveGroup::plan_cartesian_space(MoveGroupInterface& move_group, std::vector<geometry_msgs::Pose>  waypoints)
 {
-
-
-}
-        
-void URMoveGroup::plan_cartesian_space(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, std::vector<geometry_msgs::Pose>  waypoints)
-{    
-
     ////// Cartesian Paths
     // You can plan a Cartesian path directly by specifying a list of waypoints for the end-effector to go through. 
     // Note that we are starting from the new start state above.  
@@ -371,8 +378,50 @@ void URMoveGroup::plan_cartesian_space(MoveGroupInterface& move_group, MoveItVis
     // Second get a RobotTrajectory from trajectory
 	robot_move_trajectory.setRobotTrajectoryMsg(*move_group.getCurrentState(), trajectory);
 
-    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (Cartesian path) (%.2f%% acheived)", fraction * 100.0);
+    success = (move_group.plan( _plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (Cartesian) %s", success ? "" : "FAILED");
 
+    if(success)
+        move_group.move(); 
+
+}
+        
+void URMoveGroup::plan_cartesian_space(MoveGroupInterface& move_group, MoveItVisualTools& visual_tools, std::vector<geometry_msgs::Pose>  waypoints)
+{    
+
+    ////// Cartesian Paths
+    // You can plan a Cartesian path directly by specifying a list of waypoints for the end-effector to go through. 
+    // Note that we are starting from the new start state above.  
+    // The initial pose (start state) does not need to be added to the waypoint list but adding it can help with visualizations
+
+    // Cartesian motions are frequently needed to be slower for actions such as approach and retreat
+    // grasp motions. Here we demonstrate how to reduce the speed of the robot arm via a scaling factor
+    // of the maxiumum speed of each joint. Note this is not the speed of the end effector point.
+    move_group.setMaxVelocityScalingFactor(0.1);
+	// Allow replanning
+	move_group.allowReplanning(true);
+
+    // We want the Cartesian path to be interpolated at a resolution of 1 cm
+    // which is why we will specify 0.01 as the max step in Cartesian
+    // translation.  We will specify the jump threshold as 0.0, effectively disabling it.
+    // Warning - disabling the jump threshold while operating real hardware can cause
+    // large unpredictable motions of redundant joints and could be a safety issue
+    moveit_msgs::RobotTrajectory trajectory;
+    const double jump_threshold = 0.0;
+    const double eef_step = 0.01;
+    double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
+
+
+    // Get robot trajectory to which joint speeds will be added
+	robot_trajectory::RobotTrajectory robot_move_trajectory(move_group.getCurrentState()->getRobotModel(), "manipulator");
+		
+    // Second get a RobotTrajectory from trajectory
+	robot_move_trajectory.setRobotTrajectoryMsg(*move_group.getCurrentState(), trajectory);
+
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (Cartesian path) (%.2f%% acheived)", fraction * 100.0);
+    
+	sleep(5.0);
+        
     // Visualize the plan in RViz
     visual_tools.deleteAllMarkers();
     visual_tools.publishText(_text_pose, "Cartesian path", rvt::WHITE, rvt::XLARGE);
@@ -381,6 +430,15 @@ void URMoveGroup::plan_cartesian_space(MoveGroupInterface& move_group, MoveItVis
         visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
     visual_tools.trigger();
     visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+
+    success = (move_group.plan( _plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (Cartesian) %s", success ? "" : "FAILED");
+
+    if(success)
+    {
+        _plan.trajectory_ = trajectory;
+        move_group.execute(_plan);
+    }
 }
 
 void URMoveGroup::send_gripper(robotiq_2f_gripper_msgs::RobotiqGripperCommand command)
@@ -413,11 +471,11 @@ void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visua
     moveit_msgs::OrientationConstraint ocm;
     ocm.link_name = "tool0";
     ocm.header.frame_id = "base_link";
-    ocm.orientation.w = 1.0;
-    ocm.absolute_x_axis_tolerance = 0.1;
-    ocm.absolute_y_axis_tolerance = 0.1;
-    ocm.absolute_z_axis_tolerance = 0.1;
-    ocm.weight = 1.0;
+    ocm.orientation.w = 0.10;
+    ocm.absolute_x_axis_tolerance = 0.01;
+    ocm.absolute_y_axis_tolerance = 0.01;
+    ocm.absolute_z_axis_tolerance = 0.01;
+    ocm.weight = 0.10;
 
     plan_with_path_constraint(move_group, visual_tools, ocm, target_pose);
 
@@ -433,9 +491,7 @@ void URMoveGroup::start(MoveGroupInterface& move_group, MoveItVisualTools& visua
     target_crts_pose.position.x -= 0.2;
     waypoints.push_back(target_crts_pose);  
     target_crts_pose.position.z += 0.2;
-    waypoints.push_back(target_crts_pose);  
-    target_crts_pose.position.x -= 0.2;
-    waypoints.push_back(target_crts_pose);  
+    waypoints.push_back(target_crts_pose); 
     plan_cartesian_space(move_group, visual_tools, waypoints);
 
 }
