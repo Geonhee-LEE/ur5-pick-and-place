@@ -24,7 +24,7 @@
 
 
   <joint name="robotiq_coupler_joint" type="fixed">
-    <origin xyz="0 0 0.004" rpy="0 0 ${-pi/2.0}" />
+    <origin xyz="0 0 0.004" rpy="0 0 0" />
     <parent link="tool0"/>
     <child link="robotiq_arg2f_base_link"/>
   </joint>
