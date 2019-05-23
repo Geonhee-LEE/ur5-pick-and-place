@@ -173,7 +173,7 @@ include_directories(
 
 add_executable(ur_move_group_interface
   src/ur_move_group_interface.cpp
-  src/ur_move_group.cpp
+  src/main.cpp
   )
 add_dependencies(ur_move_group_interface ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(ur_move_group_interface ${catkin_LIBRARIES})

@@ -21,6 +21,7 @@
 
 // TF2
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2/LinearMath/Quaternion.h>
 
 // Gripper
 #include <robotiq_2f_gripper_msgs/RobotiqGripperCommand.h>

@@ -19,4 +19,6 @@ int main(int argc, char **argv)
     URMoveGroup ur;        
     
  
+    ros::shutdown();
+    return 0;
 }
