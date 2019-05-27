@@ -9,9 +9,9 @@
   <xacro:include filename="$(find ur_description)/urdf_robotiq/ur5.urdf.xacro" />
 
   <xacro:include filename="$(find robotiq_2f_140_gripper_visualization)/urdf/robotiq_arg2f_140_model.xacro" />
-
+ 
   <!-- arm -->
-  <xacro:ur5_robot prefix="" joint_limited="true"/>
+  <xacro:ur5_robot prefix="" joint_limited="false"/>
 
   <link name="world" />
 

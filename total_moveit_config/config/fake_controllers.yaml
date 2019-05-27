@@ -10,9 +10,3 @@ controller_list:
   - name: fake_eef_controller
     joints:
       - finger_joint
-
-
-
-initial:
-  - group: manipulator
-    pose:  up

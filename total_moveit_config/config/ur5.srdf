@@ -24,7 +24,6 @@
         <link name="right_outer_finger" />
         <link name="right_inner_finger" />
         <link name="right_inner_finger_pad" />
-        <joint name="robotiq_coupler_joint" />
         <joint name="finger_joint" />
         <joint name="left_outer_finger_joint" />
         <joint name="left_inner_finger_joint" />
