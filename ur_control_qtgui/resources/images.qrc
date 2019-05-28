@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>images/nscl.png</file>
+    </qresource>
+</RCC>
